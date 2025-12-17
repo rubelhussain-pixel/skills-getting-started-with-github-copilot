@@ -4,6 +4,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Function to get icon for activity
+  function getActivityIcon(name) {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes('soccer')) return '⚽';
+    if (lowerName.includes('basketball')) return '🏀';
+    if (lowerName.includes('tennis')) return '🎾';
+    if (lowerName.includes('football')) return '🏈';
+    if (lowerName.includes('baseball')) return '⚾';
+    if (lowerName.includes('volleyball')) return '🏐';
+    if (lowerName.includes('swimming')) return '🏊';
+    if (lowerName.includes('running') || lowerName.includes('track')) return '🏃';
+    if (lowerName.includes('chess')) return '♟️';
+    if (lowerName.includes('music') || lowerName.includes('band')) return '🎵';
+    if (lowerName.includes('art')) return '🎨';
+    if (lowerName.includes('drama') || lowerName.includes('theater')) return '🎭';
+    if (lowerName.includes('science')) return '🔬';
+    if (lowerName.includes('math')) return '🔢';
+    if (lowerName.includes('debate')) return '💬';
+    return '🎯'; // default icon
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -21,10 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
 
         activityCard.innerHTML = `
-          <h4>${name}</h4>
+          <h4><span class="activity-icon">${getActivityIcon(name)}</span> ${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <p><strong>Participants:</strong></p>
+          <ul class="participants-list">
+            ${details.participants.map(participant => `<li>${participant}</li>`).join('')}
+          </ul>
         `;
 
         activitiesList.appendChild(activityCard);
